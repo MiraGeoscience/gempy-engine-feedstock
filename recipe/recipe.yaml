@@ -36,6 +36,18 @@ tests:
       imports:
         - gempy_engine
       pip_check: true
+  - requirements:
+      run:
+        - numpy
+        - pandas
+        - pytest
+    files:
+      source:
+        - tests/
+      recipe:
+        - matplotlib.py
+    script:
+      - pytest tests/test_common/test_core
 
 about:
   summary: A Python package necessary for GemPy.
