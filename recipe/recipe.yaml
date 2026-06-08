@@ -35,7 +35,12 @@ tests:
       python_version: ${{ python_min }}.*
       imports:
         - gempy_engine
-      pip_check: true
+      pip_check: false  # because rattler-build installs ipykernel (see script below)
+  - script:
+      - pip check || pip check | grep "jupyter-core"
+    requirements:
+      run:
+        - pip
 
 about:
   summary: A Python package necessary for GemPy.
