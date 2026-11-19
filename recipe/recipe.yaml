@@ -2,21 +2,27 @@ schema_version: 1
 
 context:
   name: gempy-engine
-  version: "2025.3.1a3"
   python_min: "3.12"
+  version: "${{ load_from_file('_version.txt') | default('3.0.0') }}"
 
 package:
   name: ${{ name|lower }}
-  version: ${{ version }}
+  version: "${{ version }}"
 
 source:
-  url: https://pypi.org/packages/source/${{ name[0] }}/${{ name }}/gempy_engine-${{ version }}.tar.gz
-  sha256: 2ec0f20c6b0a19a159d12267dfdab8a59f648d7ba335b61a38b38c2646716297
+  # url: https://pypi.org/packages/source/${{ name[0] }}/${{ name }}/gempy_engine-${{ version }}.tar.gz
+  # sha256:
+  git: https://github.com/MiraGeoscience/gempy_engine
+  branch: release/simpeg-drivers-0.4.0
 
 build:
   number: 0
   noarch: python
-  script: ${{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
+  script:
+    env:
+      SETUPTOOLS_SCM_PRETEND_VERSION: "${{ version }}"
+    content:
+      ${{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
 
 requirements:
   host:
@@ -35,12 +41,7 @@ tests:
       python_version: ${{ python_min }}.*
       imports:
         - gempy_engine
-      pip_check: false  # because rattler-build installs ipykernel (see script below)
-  - script:
-      - pip check || pip check | grep "jupyter-core"
-    requirements:
-      run:
-        - pip
+      pip_check: true
 
 about:
   summary: A Python package necessary for GemPy.
