@@ -2,17 +2,15 @@ schema_version: 1
 
 context:
   name: gempy-engine
-  version: "${{ load_from_file('_version.txt') | default('3.0.0') }}"
+  version: "2026.1.0a1"
 
 package:
   name: gempy-engine
   version: "${{ version }}"
 
 source:
-  # url: https://pypi.org/packages/source/${{ name[0] }}/${{ name }}/gempy_engine-${{ version }}.tar.gz
-  # sha256:
-  git: https://github.com/MiraGeoscience/gempy_engine
-  branch: release/simpeg-drivers-0.5.0
+  url: https://pypi.org/packages/source/${{ name[0] }}/${{ name }}/gempy_engine-${{ version }}.tar.gz
+  sha256: 5ab0450e9378dbe2f3e457ddc5105d824bd72ac77e09cb702f878f163cd5c702
 
 build:
   number: 0
@@ -34,6 +32,7 @@ requirements:
     - numpy
     - pydantic
     - python-dotenv
+    - scipy
 
 tests:
   - python:
