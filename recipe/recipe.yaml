@@ -2,20 +2,26 @@ schema_version: 1
 
 context:
   name: gempy-engine
-  version: "2026.0.3.post1"
+  version: "${{ load_from_file('_version.txt') | default('3.0.0') }}"
 
 package:
   name: gempy-engine
-  version: ${{ version }}
+  version: "${{ version }}"
 
 source:
-  url: https://pypi.org/packages/source/${{ name[0] }}/${{ name }}/gempy_engine-${{ version }}.tar.gz
-  sha256: d4c708d5f4a9435bd4e7838d428294923f81eb163ef6cc8840fd19612536e430
+  # url: https://pypi.org/packages/source/${{ name[0] }}/${{ name }}/gempy_engine-${{ version }}.tar.gz
+  # sha256:
+  git: https://github.com/MiraGeoscience/gempy_engine
+  branch: release/simpeg-drivers-0.4.0
 
 build:
   number: 0
   noarch: python
-  script: ${{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
+  script:
+    env:
+      SETUPTOOLS_SCM_PRETEND_VERSION: "${{ version }}"
+    content:
+      ${{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
 
 requirements:
   host:
